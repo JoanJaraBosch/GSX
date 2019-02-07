@@ -7,13 +7,13 @@
 
 #comprovem que nomes tenim un parametre
 if [ $# -eq 1 ]; then
-	if [ $@ = "-h" ];then
+	if [ "$@" = "-h" ];then
 		echo "Aquest script el pot executar qualsevol usuari . Serveix per a buidar el contingut d'un fitxer passat per parametre, per tant voldrem que ens passis el path absolut del fitxer o la opcio -h per a mostrarte aquest missatge. Aquest script no te permissos per a eliminar fitxers especials ja que no te permissos de root, es a dir, nomes el root podra buidar fitxers especials com el /network/interfaces si es que hi han els permissos en el fitxer."
 	#aquet elif el fem per comprovar que ens passen un fitxer i que existeix	
-	elif [ -e $1 ]; then
-		if [ -f $1 ];then
-			cat /dev/null > $1
-		elif [ -d $1 ];then
+	elif [ -e "$1" ]; then
+		if [ -f "$1" ];then
+			cat /dev/null > "$1"
+		elif [ -d "$1" ];then
 			echo "No pots buidar un directori"
 		fi
 	else
