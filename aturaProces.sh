@@ -13,7 +13,7 @@ elif [ "$#" -eq 0 ];then
 	hora=$(date +"%H")
 
 	if [ $hora -ge 8 ] && [ $hora -lt 21 ];then
-		for proces in $(ps -da -o pid,size,time,state | grep -v T | awk '$2 >= 1048576 {print $0 }' | tr : " " | awk '$5>=5 {print $1}');
+		for proces in $(ps -da -o pid,size,time,state | grep -v T | awk '$2 >= 1048576 {print $0 }' | tr : " " | awk '$4>=5 {print $1}');
 		do
 			echo $proces && kill -19 $proces
 		done
