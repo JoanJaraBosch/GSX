@@ -1,0 +1,11 @@
+[Unit]
+Description=Service in systemd to make a backup of the modified files from the previous start of the system.
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStop=/usr/bin/copiaSegur.sh 
+ExecReload=/usr/bin/copiaSegur.sh reload
+
+[Install]
+WantedBy=multi-user.target
