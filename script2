@@ -1,0 +1,71 @@
+#!/bin/sh
+# Start/stop the cron daemon.
+#
+### BEGIN INIT INFO
+# Provides:          script2
+# Required-Start:    $remote_fs $syslog $time
+# Required-Stop:     $remote_fs $syslog $time
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Regular background program processing daemon
+# Description:       cron is a standard UNIX program that runs user-specified 
+#      		     script of .......
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DESC="script2 daemon"
+NAME=script2
+SCRIPTNAME=/etc/init.d/"$NAME"
+DAEMON=/etc/init.d/script2
+
+#do_start()
+ #{
+ # Return
+ # 0 if daemon has been started
+ # 1 if daemon was already running
+ # 2 if daemon could not be started
+ #start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON& --test
+ #/dev/null \
+ #start-stop-daemon --start --pidfile $PIDFILE --exec $DAEMON& -- \
+ #$DAEMON_ARGS \
+ #|| return 2
+ # Add code here, if necessary, that waits for the process to be ready
+ # to handle requests from services started subsequently which depend
+ # on this one. As a last resort, sleep for some time.
+ #}
+
+case "$1" in
+ start)
+   /home/milax/gsx_practica1_sistemes/lab_serveis/script2.sh &	 
+  #/usr/local/bin/script2.sh &
+   echo $!>/var/run/hit.pid
+;;
+ stop)
+   kill `cat /var/run/hit.pid`
+   rm /var/run/hit.pid
+ ;;
+ status)
+ if [ -e /var/run/hit.pid ]; then
+      echo hit.sh is running, pid=`cat /var/run/hit.pid`
+   else
+      echo hit.sh is NOT running
+      exit 1
+ fi
+ ;;
+ #reload|force-reload)
+ #;;
+ restart|force-reload)
+ do_stop
+ do_start
+ ;;
+ *)
+ #echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+ echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+ exit 3
+ ;;
+ esac
+
+exit 0 
+
+
+

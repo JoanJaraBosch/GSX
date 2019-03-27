@@ -5,7 +5,7 @@
 # Version: 1.0
 # Description: Aquest script serveix per aturar processos que han estat 5 minuts consumint cpu amb 1gb o més de memoria. A les 9 de la nit els reengegaria i si a les 8 del dia següent no han acabat els tornaria a apagar. Per tant de 8 del mati a 9 de la nit anira mirant els processos que compleixin aquesta condicio i a partir de les 9 de la nit els reengegara (nomes dies laborables). Només pot rebre un parametre (-h) per demanar ajuda. 
 
-if [ "$#" -eq 1 ];then
+if [ "$#" -eq 1 ] && [ "$1" = "-h" ];then
 	echo "Aquest script no necessita cap parametre, s'executa amb el crontab i pausa processos que estan 5 minuts o mes i ocupen 1gb o mes en dies laborables de 8 a 21. A partir de les 21 els deix continuar"
 
 elif [ "$#" -eq 0 ];then
