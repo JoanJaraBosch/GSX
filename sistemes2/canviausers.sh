@@ -13,20 +13,18 @@ elif [ "$#" -eq 1 ] && [ "$1" = "-h" ];then
 else
 	for usuari in "$@";do
 	if [ "$(id -u $usuari 2>/dev/null)" != "" ];then
-		numfila=$(grep "$usuari" -n /home/milax/shadow | cut -d ":" -f 1)
-		linea=$(grep "$usuari" /home/milax/shadow | cut -d "$" -f 4)
-		part1=$(grep "$usuari" /home/milax/shadow | cut -d "$" -f 1)
-		part2=$(grep "$usuari" /home/milax/shadow | cut -d "$" -f 2)
-		part3=$(grep "$usuari" /home/milax/shadow | cut -d "$" -f 3)
-		if [ "${linea:0:1}" = "!" ];then
-			linea="$part1$""$part2$""$part3$""${linea:1:-1}"
+		numfila=$(grep "$usuari" -n /etc/shadow | cut -d ":" -f 1)
+		param=$(grep "$usuari" /etc/shadow | cut -d ":" -f 1)
+		param2=$(grep "$usuari" /etc/shadow | cut -d ":" -f 2-)
+		if [ "${param2:0:1}" = "!" ];then
+			linea="$param:${param2:1:-1}"
 			echo "Habilitant l'usuari $usuari"		
 		else
-			linea="$part1$""$part2$""$part3$""!${linea:0:-1}"
+			linea="$param:!$param2:"
 			echo "Deshabilitant l'usuari $usuari"
 		fi	
-		sed -i "$numfila""d" /home/milax/shadow
-		echo "$linea" >> /home/milax/shadow
+		sed -i "$numfila""d" /etc/shadow
+		echo "$linea" >> /etc/shadow
 	fi
 	done
 fi

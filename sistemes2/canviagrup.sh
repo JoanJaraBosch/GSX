@@ -11,12 +11,16 @@ if [ "$#" -eq 0 ];then
 elif [ "$#" -eq 1 ] && [ "$1" = "-h" ];then
 	echo "EL scrip reb per parametre un grup secundari i guarda informacio del temps que ha estat actiu, per quin user i quin dia"
 else
+	if ! [ -f /usr/bin/time ];then
+		apt-get install time
+	fi
+
 	for grup in $(groups $USER | cut -d ":" -f 2);do
 		if [ $1 = $grup ];then
-			mkdir -p /home/milax/root/temps
+			mkdir -p /home/milax/root/temps/.$grup
 			data=$(date +"%d-%m-%Y")
 			echo "Usuari $USER data $data amb els seguents temps: $TIMEFORMAT" >> /home/milax/root/temps/.$grup
-			temps=$(\time -p -ao /home/milax/root/temps/.$grup newgrp $grup)
+			temps=$(/usr/bin/time -p -ao /home/milax/root/temps/.$grup newgrp $grup)
 			echo "" >> /home/milax/root/temps/.$grup
 			exit 0
 		fi
