@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Authors: Grup1A
+# Version: 1.0
+# Date: 12/05/2019
+# Description: script el qual susara com la comanda lp original. Actuara sempre com la comanda lp normal menys quan tinguem la opcio -d virtualImpre. Llavors demanara usuari i contrasenya per tal de deixar imprimir o no. Com si diguessim, li possem proteccio a la nostre impresora virtual. 
+
+param_anterior=""
+for param in $@; do
+	if [ "$param_anterior" = "-d" ] && [ "$param" = "virtualImpre" ] || [ "$param" = "-dvirtualImpre" ]; then
+		IFS=$'\n'
+		for usr_pas in $(cat /usr/local/secret); do
+			if [ "$USER" = "$(echo $usr_pas |cut -d ' ' -f 1)" ]; then
+				echo "Introdueix la contrasenya"
+				stty -echo
+				read pass
+				stty echo
+				pass=$(openssl passwd -crypt -salt grup1A $pass)
+				if [ "$pass" = "$(echo $usr_pas |cut -d ' ' -f 2)" ]; then
+					/usr/bin/lp_original $*
+					exit 0
+				else
+					echo "Error: Contrasenya incorrecta"
+					exit 1
+				fi
+			fi
+		done
+		echo "Error: No es permet l'acces a aquest usuari al utilitzar la impresora: virtualImpre"
+		exit 1
+	fi
+	param_anterior=$param
+done
+/usr/bin/lp_original $*
+exit 0
+
