@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Authors: Grup1A
+# Version 1.0
+# Date: 12/05/2019
+# Description: script que només pot executar el usuari root i el qual només cal executar un cop per tal que quan l'usuari obre la terminal li surti el usatge de memoria del seu directori.
+
+for file in $(cat /etc/passwd | cut -d ":" -f 1,6);do
+	user=$(echo $file | cut -d ":" -f 1)
+	dir=$(echo $file | cut -d ":" -f 2)
+	f="$dir""/.bashrc"
+	if [ -e "$dir" ];then
+		if ! [ -e "$dir""/.bashrc" ];then
+			touch $f
+			chmod 644 $f
+			chown $user:$user $f
+		fi
+	
+	echo "echo DISK USAGE OF "$dir""  >> $f
+	echo "du -sh $dir" >> $f
+	fi
+done
+exit 0
+
